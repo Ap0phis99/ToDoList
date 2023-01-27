@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ToDoList</string>
+    <string name="hintCorreo">email</string>
+    <string name="hintPass">password</string>
+    <string name="mas">mas</string>
+    <string name="logout">logout</string>
+    <string name="done">done</string>
+</resources>
