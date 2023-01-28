@@ -3,10 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
     <item
-        android:id="@+id/mas"
-        android:title="@string/mas"
-        android:icon="@mipmap/mas"
+        android:id="@+id/add"
+        android:title="@string/add"
+        android:icon="@mipmap/add"
         app:showAsAction="always"
+        app:iconTint="@color/orange"
         />
 
     <item
@@ -14,5 +15,6 @@
         android:title="@string/logout"
         android:icon="@mipmap/logout"
         app:showAsAction="always"
+        app:iconTint="@color/red"
         />
 </menu>

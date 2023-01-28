@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
-            case R.id.mas:
+            case R.id.add:
                 //activar cuadro diálogo para añadir
 
                 final EditText taskEditText = new EditText(this);
@@ -120,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
                         dialog.show();
                     Toast.makeText(this, "Tarea Añadida", Toast.LENGTH_SHORT).show();
                 return true;
+
             case R.id.logout:
                 //cierre de sesión
                 mAuth.signOut();
