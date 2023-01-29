@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -61,8 +62,7 @@ public class MainActivity extends AppCompatActivity {
                 .whereEqualTo("emailUsuario", emailUsuario)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
-                    public void onEvent(@Nullable QuerySnapshot value,
-                                        @Nullable FirebaseFirestoreException e) {
+                    public void onEvent(@Nullable QuerySnapshot value,@Nullable FirebaseFirestoreException e) {
                         if (e != null) {
                             return;
                         }
@@ -84,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
@@ -158,40 +157,39 @@ public class MainActivity extends AppCompatActivity {
         toast.show();
     }
 
-    /*
-     public void editarTarea(View view){
-        TextView taskEdited = (TextView) findViewById(R.id.nombreTarea);
-        AlertDialog editDialog = new AlertDialog.Builder(this)
-                .setTitle("Modificar Tarea")
+    public void editarTarea(View view) {
+        View parent = (View) view.getParent();
+        TextView tareaTextView = parent.findViewById(R.id.nombreTarea);
+        String tarea = tareaTextView.getText().toString();
+        int posicion = listaTareas.indexOf(tarea);
+        final EditText taskEditText = new EditText(this);
+        taskEditText.setText(tarea);
+
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("Editar Tarea")
                 .setMessage("¿Que quiere hacer a continuación?")
-                .setView(taskEdited)
-                .setPositiveButton("editar", new DialogInterface.OnClickListener(){
+                .setView(taskEditText)
+                .setPositiveButton("editar", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i){
+                    public void onClick(DialogInterface dialogInterface, int i) {
 
-                        String miTarea = taskEdited.getText().toString();
+                        String miTareaEditada = taskEditText.getText().toString();
 
-                        Map<String, Object> tarea = new HashMap<>();
-                        tarea.put("nombreTarea", miTarea);
-                        tarea.put("emailUsuario", emailUsuario);
-
-                        db.collection("Tareas").document(miTarea).update("Tareas",miTarea);
+                        db.collection("Tareas").document(listaIdTareas.get(posicion)).update("nombreTarea",miTareaEditada);
 
                         Toast toast = new Toast(getApplicationContext());
                         LayoutInflater inflater = getLayoutInflater();
                         View layout = inflater.inflate(R.layout.toast_layout, (ViewGroup) findViewById(R.id.lytLayout));
-                        TextView txtMsg = (TextView)layout.findViewById(R.id.txtMensaje);
-                        txtMsg.setText("Tarea modificada");
+                        TextView txtMsg = (TextView) layout.findViewById(R.id.txtMensaje);
+                        txtMsg.setText("Tarea editada");
                         toast.setDuration(Toast.LENGTH_SHORT);
                         toast.setView(layout);
                         toast.show();
 
                     }
                 })
-                .setNegativeButton("Cancelar",null)
+                .setNegativeButton("Cancelar", null)
                 .create();
-        editDialog.show();
-        }
-        */
-
-  }
+        dialog.show();
+    }
+}
