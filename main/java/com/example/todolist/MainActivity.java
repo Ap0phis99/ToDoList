@@ -8,9 +8,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -73,10 +75,10 @@ public class MainActivity extends AppCompatActivity {
                             listaTareas.add(doc.getString("nombreTarea"));
                         }
 
-                        if (listaTareas.size() == 0){
+                        if (listaTareas.size() == 0) {
                             listViewTareas.setAdapter(null);
-                        }else{
-                            mAdapterTareas = new ArrayAdapter<>(MainActivity.this,R.layout.item_tarea,R.id.nombreTarea,listaTareas);
+                        } else {
+                            mAdapterTareas = new ArrayAdapter<>(MainActivity.this, R.layout.item_tarea, R.id.nombreTarea, listaTareas);
                             listViewTareas.setAdapter(mAdapterTareas);
                         }
                     }
@@ -85,13 +87,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu,menu);
+        getMenuInflater().inflate(R.menu.menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.add:
                 //activar cuadro diálogo para añadir
 
@@ -100,9 +102,9 @@ public class MainActivity extends AppCompatActivity {
                         .setTitle("Nueva Tarea")
                         .setMessage("¿Que quiere hacer a continuación?")
                         .setView(taskEditText)
-                        .setPositiveButton("añadir", new DialogInterface.OnClickListener(){
+                        .setPositiveButton("añadir", new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialogInterface, int i){
+                            public void onClick(DialogInterface dialogInterface, int i) {
                                 //Añadir tarea a la base de datos
 
                                 String miTarea = taskEditText.getText().toString();
@@ -113,12 +115,20 @@ public class MainActivity extends AppCompatActivity {
 
                                 db.collection("Tareas").add(tarea);
 
+                                Toast toast = new Toast(getApplicationContext());
+                                LayoutInflater inflater = getLayoutInflater();
+                                View layout = inflater.inflate(R.layout.toast_layout, (ViewGroup) findViewById(R.id.lytLayout));
+                                TextView txtMsg = (TextView) layout.findViewById(R.id.txtMensaje);
+                                txtMsg.setText("Tarea añadida");
+                                toast.setDuration(Toast.LENGTH_SHORT);
+                                toast.setView(layout);
+                                toast.show();
+
                             }
                         })
-                        .setNegativeButton("Cancelar",null)
+                        .setNegativeButton("Cancelar", null)
                         .create();
-                        dialog.show();
-                    Toast.makeText(this, "Tarea Añadida", Toast.LENGTH_SHORT).show();
+                dialog.show();
                 return true;
 
             case R.id.logout:
@@ -131,12 +141,57 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void borrarTarea(View view){
+    public void borrarTarea(View view) {
         View parent = (View) view.getParent();
         TextView tareaTextView = parent.findViewById(R.id.nombreTarea);
         String tarea = tareaTextView.getText().toString();
         int posicion = listaTareas.indexOf(tarea);
 
         db.collection("Tareas").document(listaIdTareas.get(posicion)).delete();
+        Toast toast = new Toast(getApplicationContext());
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.toast_layout, (ViewGroup) findViewById(R.id.lytLayout));
+        TextView txtMsg = (TextView) layout.findViewById(R.id.txtMensaje);
+        txtMsg.setText("Tarea eliminada");
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setView(layout);
+        toast.show();
     }
-}
+
+    /*
+     public void editarTarea(View view){
+        TextView taskEdited = (TextView) findViewById(R.id.nombreTarea);
+        AlertDialog editDialog = new AlertDialog.Builder(this)
+                .setTitle("Modificar Tarea")
+                .setMessage("¿Que quiere hacer a continuación?")
+                .setView(taskEdited)
+                .setPositiveButton("editar", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i){
+
+                        String miTarea = taskEdited.getText().toString();
+
+                        Map<String, Object> tarea = new HashMap<>();
+                        tarea.put("nombreTarea", miTarea);
+                        tarea.put("emailUsuario", emailUsuario);
+
+                        db.collection("Tareas").document(miTarea).update("Tareas",miTarea);
+
+                        Toast toast = new Toast(getApplicationContext());
+                        LayoutInflater inflater = getLayoutInflater();
+                        View layout = inflater.inflate(R.layout.toast_layout, (ViewGroup) findViewById(R.id.lytLayout));
+                        TextView txtMsg = (TextView)layout.findViewById(R.id.txtMensaje);
+                        txtMsg.setText("Tarea modificada");
+                        toast.setDuration(Toast.LENGTH_SHORT);
+                        toast.setView(layout);
+                        toast.show();
+
+                    }
+                })
+                .setNegativeButton("Cancelar",null)
+                .create();
+        editDialog.show();
+        }
+        */
+
+  }

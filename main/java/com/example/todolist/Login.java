@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -83,11 +85,26 @@ public class Login extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
                                         // Sign in success, update UI with the signed-in user's information
-                                        Toast.makeText(Login.this, "Usuario Registrado", Toast.LENGTH_LONG).show();
+                                        Toast toast = new Toast(getApplicationContext());
+                                        LayoutInflater inflater = getLayoutInflater();
+                                        View layout = inflater.inflate(R.layout.toast_layout, (ViewGroup) findViewById(R.id.lytLayout));
+                                        TextView txtMsg = (TextView)layout.findViewById(R.id.txtMensaje);
+                                        txtMsg.setText("Usuario Registrado");
+                                        toast.setDuration(Toast.LENGTH_SHORT);
+                                        toast.setView(layout);
+                                        toast.show();
+                                        //Toast.makeText(Login.this, "Usuario Registrado", Toast.LENGTH_LONG).show();
                                     } else {
                                         // If sign in fails, display a message to the user.
-                                        Toast.makeText(Login.this, "No se pudo crear el usuario",
-                                                Toast.LENGTH_SHORT).show();
+                                        //Toast.makeText(Login.this, "No se pudo crear el usuario",
+                                        Toast toast = new Toast(getApplicationContext());
+                                        LayoutInflater inflater = getLayoutInflater();
+                                        View layout = inflater.inflate(R.layout.toast_layout, (ViewGroup) findViewById(R.id.lytLayout));
+                                        TextView txtMsg = (TextView)layout.findViewById(R.id.txtMensaje);
+                                        txtMsg.setText("No se pudo registrar el usuario");
+                                        toast.setDuration(Toast.LENGTH_SHORT);
+                                        toast.setView(layout);
+                                        toast.show();
                                     }
                                 }
                             });

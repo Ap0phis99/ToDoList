@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <Button
         android:id="@+id/button"
         android:layout_width="48dp"
@@ -21,7 +22,24 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/edit"
+        android:layout_width="48dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="108dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:onClick="editarTarea"
+        app:icon="@drawable/edit"
+        app:iconGravity="textStart"
+        app:iconPadding="10dp"
+        app:iconSize="32dp"
+        app:iconTint="@color/orange"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
+        android:fontFamily="@font/pirata_one"
         android:id="@+id/nombreTarea"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,4 +48,5 @@
         android:text="TextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
